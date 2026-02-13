@@ -1,11 +1,6 @@
-# mcp-ssh-manager マニュアル
+# mcp-ssh-manager
 
 `mcp-ssh-manager` は、トワーク内のSSH接続先を統合管理するGUIハブ兼MCPサーバーです。マシン情報の管理、アカウントの紐付け、死活監視、および自動バックアップ機能を備えています。
-
-### 📄 ドキュメント
-- **[最新設計仕様書 (INTEGRATED_SPEC_PHASE_1-11.md)](file:///Users/primalcolors/Library/CloudStorage/GoogleDrive-akiharu.uchiyama@gmail.com/マイドライブ/dev/SSH_Dev/mcp-ssh-manager-private/INTEGRATED_SPEC_PHASE_1-11.md)**: プロジェクト全体の正典となる仕様書です。
-- **[運用マニュアル (USER_MANUAL.md)](file:///Users/primalcolors/Library/CloudStorage/GoogleDrive-akiharu.uchiyama@gmail.com/マイドライブ/dev/SSH_Dev/mcp-ssh-manager-private/USER_MANUAL.md)**: ユーザー向けの操作ガイド。
-- *※ 過去の仕様書は `docs/archive/` に隔離されており、AIエージェントによる誤参照を防ぐため無視設定されています。*
 
 ## 1. メインインターフェース (タブ構成)
 
