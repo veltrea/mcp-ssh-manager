@@ -1,0 +1,69 @@
+# mcp-ssh-manager マニュアル
+
+`mcp-ssh-manager` は、トワーク内のSSH接続先を統合管理するGUIハブ兼MCPサーバーです。マシン情報の管理、アカウントの紐付け、死活監視、および自動バックアップ機能を備えています。
+
+### 📄 ドキュメント
+- **[最新設計仕様書 (INTEGRATED_SPEC_PHASE_1-11.md)](file:///Users/primalcolors/Library/CloudStorage/GoogleDrive-akiharu.uchiyama@gmail.com/マイドライブ/dev/SSH_Dev/mcp-ssh-manager-private/INTEGRATED_SPEC_PHASE_1-11.md)**: プロジェクト全体の正典となる仕様書です。
+- **[運用マニュアル (USER_MANUAL.md)](file:///Users/primalcolors/Library/CloudStorage/GoogleDrive-akiharu.uchiyama@gmail.com/マイドライブ/dev/SSH_Dev/mcp-ssh-manager-private/USER_MANUAL.md)**: ユーザー向けの操作ガイド。
+- *※ 過去の仕様書は `docs/archive/` に隔離されており、AIエージェントによる誤参照を防ぐため無視設定されています。*
+
+## 1. メインインターフェース (タブ構成)
+
+### 1.1. 🌐 接続先 (Connections)
+- **ステータス表示**: マシンの左側に表示されるアイコン（🟢 オンライン / 🔴 オフライン）で稼働状況を把握。
+- **クイック操作**: 
+    - **✏️ 編集**: マシンのスペックや監視ポートの変更。
+    - **⚡ WOL**: Wake-On-LANによるマシンの遠隔起動。
+    - **💻 接続**: 標準の `ssh` コマンドを介したターミナルの起動。
+- **高度な検索**: 用途やホスト名で瞬時にフィルタリング。
+
+### 1.2. 👥 アカウント (Accounts)
+- SSH接続に使用する資格情報（ユーザー名、パスワード、秘密鍵）を安全に登録・管理します。
+
+### 1.3. 📜 ログ (Logs)
+- すべてのツール実行（`ssh_exec`等）の履歴、コマンド、終了コード、タイムスタンプを確認できます。
+
+### 1.4. 🛠️ ツール (Tools)
+- **自動バックアップ**: 毎日1回、SQLiteデータベースのバックアップを自動生成します。
+- **バックアップローテーション**: 直近7日分を保持し、古いものは自動削除されます。
+- **手動バックアップ**: 任意のタイミングで即座にバックアップを作成可能。
+
+## 2. 高度な機能
+
+### 2.1. 死活監視 (Advanced Monitoring)
+- **ICMP Ping**: TCPポートが閉じている場合でも、Pingによる疎通確認を自動で行います。
+- **カスタムポート**: SSH(22)以外にも、HTTP(80/443)など任意のポートで監視可能です。
+
+### 2.2. 自動メンテナンス
+- アプリケーションが起動している間、バックグラウンドでマシンの稼働確認とデータベースのバックアップが定期的に行われます。
+
+## 4. コマンドライン (CLI) モード
+本アプリはコマンドライン引数を渡すことで、GUIなしでの操作が可能です。
+
+### 4.1. マシン一覧の表示
+```bash
+cargo run -- list
+```
+
+### 4.2. マシンの追加
+```bash
+cargo run -- add <name> <ip> --purpose "目的" --owner "personal" --os "linux"
+```
+
+### 4.3. バックアップの実行
+```bash
+cargo run -- backup [出力パス]
+```
+
+### 4.4. ヘッドレス MCP サーバーモード
+GUIを起動せず、MCPサーバーとしてのみ待機します。
+```bash
+cargo run -- mcp
+```
+
+## 5. 設定とパス
+- **データベース**: `~/Library/Application Support/com.veltrea.mcp-ssh-manager/manager.db`
+- **バックアップ出力先**: 同ディレクトリ内の `backups/` フォルダ。
+
+## 6. MCPサーバーとしての利用
+本アプリは標準入出力を介したMCPプロトコルに対応しています。LM Studioや他のAIクライアントから `ssh_exec` や `list_machines` 等のツールを呼び出すことが可能です。
