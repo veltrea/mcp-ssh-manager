@@ -51,35 +51,42 @@ AIエージェントとSSHを連携させる際、従来のパスワード認証
 - **カスタムポート**: SSH(22)以外にも、HTTP(80/443)など任意のポートで監視可能です。
 
 ### 2.2. 自動メンテナンス
-- アプリケーションが起動している間、バックグラウンドでマシンの稼獲確認とデータベースのバックアップが定期的に行われます。
+- アプリケーションが起動している間、バックグラウンドでマシンの稼働確認とデータベースのバックアップが定期的に行われます。
 
 ## 4. コマンドライン (CLI) モード
 本アプリはコマンドライン引数を渡すことで、GUIなしでの操作が可能です。
 
 ### 4.1. マシン一覧の表示
 ```bash
-cargo run -- list
+./mcp-ssh-manager list
 ```
 
 ### 4.2. マシンの追加
 ```bash
-cargo run -- add <name> <ip> --purpose "目的" --owner "personal" --os "linux"
+./mcp-ssh-manager add <名前> <IP/ホスト名> --purpose "利用目的" --owner "personal" --os "linux"
 ```
 
 ### 4.3. バックアップの実行
+デフォルトのバックアップ先に作成する場合：
 ```bash
-cargo run -- backup [出力パス]
+./mcp-ssh-manager backup
+```
+
+パスを指定する場合：
+```bash
+./mcp-ssh-manager backup [出力パス]
 ```
 
 ### 4.4. ヘッドレス MCP サーバーモード
-GUIを起動せず、MCPサーバーとしてのみ待機します。
+GUIを起動せず、標準入出力(stdio)経由でMCPサーバーとして動作します。
 ```bash
-cargo run -- mcp
+./mcp-ssh-manager mcp
 ```
 
 ## 5. 設定とパス
 - **データベース**: `~/Library/Application Support/com.veltrea.mcp-ssh-manager/manager.db`
 - **バックアップ出力先**: 同ディレクトリ内の `backups/` フォルダ。
 
-## 6. MCPサーバーとしての利用
-本アプリは標準入出力を介したMCPプロトコルに対応しています。LM Studioや他のAIクライアントから `ssh_exec` や `list_machines` 等のツールを呼び出すことが可能です。
+
+ ## 8. ライセンス
+ [MIT License](LICENSE)
